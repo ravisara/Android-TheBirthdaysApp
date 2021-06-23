@@ -50,14 +50,14 @@ class ListOfResultsFragment : Fragment() {
 
         viewModel.getBirthdaysAndOtherData()
 
+        //initializeRecyclerViewer()
+
         val observer = Observer<Resource<List<Result>>> { birthdaysResource ->
             when (birthdaysResource) {
                 is Resource.Success -> { // data won't be null if it gets here. Error conditions have been checked and guarded against in the repository.
                     customAdapterForRecyclerView = CustomAdapterForRecyclerView(birthdaysResource.data!!)
-                    theRecyclerView.apply {
-                        adapter = customAdapterForRecyclerView
-                        layoutManager = LinearLayoutManager(requireContext())
-                    }
+                    initializeRecyclerViewer()
+
                 }
                 is Resource.Error -> {
 
@@ -77,17 +77,18 @@ class ListOfResultsFragment : Fragment() {
 
     private fun initializeRecyclerViewer() {
 
-        val listener =
-            CustomAdapterForRecyclerView.OnItemClickListener { listIndexInDataSetOfItemTappedOn ->
+        theRecyclerView.apply {
+            adapter = customAdapterForRecyclerView
+            layoutManager = LinearLayoutManager(requireContext())
+        }
 
-                /*val action =
-                    DetailsFragmentDirections.actionDetailsFragmentToCollectionOfPhotoPagesFragment(
-                        listIndexInDataSetOfItemTappedOn
-                    )*/
-
-
-                //view?.findNavController()?.navigate(action)
+        val listener =  CustomAdapterForRecyclerView.OnItemClickListener { listIndexInDataSetOfItemTappedOn ->
+                val action = ListOfResultsFragmentDirections.actionListOfResultsFragmentToDetailsFragment(listIndexInDataSetOfItemTappedOn)
+                view?.findNavController()?.navigate(action)
             }
+
+        customAdapterForRecyclerView.setOnItemClickListener(listener)
+
     }
 
 }

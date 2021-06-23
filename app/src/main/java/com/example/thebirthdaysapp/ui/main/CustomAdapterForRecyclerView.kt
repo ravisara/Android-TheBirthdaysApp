@@ -3,7 +3,6 @@ package com.example.thebirthdaysapp.ui.main
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.thebirthdaysapp.api.Result
@@ -12,7 +11,7 @@ import com.example.thebirthdaysapp.R
 class CustomAdapterForRecyclerView(private val dataSet: List<Result>) : RecyclerView.Adapter<CustomAdapterForRecyclerView.ViewHolder>() {
 
     // Define listener member variable
-    private var listener: OnItemClickListener? = null
+    var listener: OnItemClickListener? = null
 
     // Define the listener interface - note a functional interface is being used to facilitate shorter code for interfaces with SAM
     fun interface OnItemClickListener {
@@ -28,7 +27,7 @@ class CustomAdapterForRecyclerView(private val dataSet: List<Result>) : Recycler
     * Provide a reference to the type of views that you are using
     * (custom ViewHolder).
     */
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(singleBirthdayItemView: View) : RecyclerView.ViewHolder(singleBirthdayItemView), View.OnClickListener {
 
         val initialsDiscTextView: TextView
         val nameTextView: TextView
@@ -36,9 +35,23 @@ class CustomAdapterForRecyclerView(private val dataSet: List<Result>) : Recycler
 
         init {
             // get handles for each of the text views
-            initialsDiscTextView = view.findViewById(R.id.textViewWithDisc)
-            nameTextView = view.findViewById(R.id.textViewName)
-            dateOfBirthTextView = view.findViewById(R.id.textViewDOB)
+            initialsDiscTextView = singleBirthdayItemView.findViewById(R.id.textViewWithDisc)
+            nameTextView = singleBirthdayItemView.findViewById(R.id.textViewName)
+            dateOfBirthTextView = singleBirthdayItemView.findViewById(R.id.textViewDOB)
+
+            // Setup the click listener
+            // Triggers click upwards to the adapter on click
+            singleBirthdayItemView.setOnClickListener(this)
+        }
+
+        override fun onClick(p0: View?) {
+
+            if (listener != null) {
+                val position = absoluteAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    listener!!.onItemClick(position)
+                }
+            }
         }
 
     }
