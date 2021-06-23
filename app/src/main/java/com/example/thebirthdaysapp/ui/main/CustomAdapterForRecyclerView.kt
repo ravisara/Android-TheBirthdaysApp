@@ -3,12 +3,26 @@ package com.example.thebirthdaysapp.ui.main
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.thebirthdaysapp.api.Result
 import com.example.thebirthdaysapp.R
 
 class CustomAdapterForRecyclerView(private val dataSet: List<Result>) : RecyclerView.Adapter<CustomAdapterForRecyclerView.ViewHolder>() {
+
+    // Define listener member variable
+    private var listener: OnItemClickListener? = null
+
+    // Define the listener interface - note a functional interface is being used to facilitate shorter code for interfaces with SAM
+    fun interface OnItemClickListener {
+        fun onItemClick(listIndexInDataSetOfItemTappedOn: Int)
+    }
+
+    // Define the method that allows the parent activity or fragment to define the listener
+    fun setOnItemClickListener(listener: OnItemClickListener?) {
+        this.listener = listener
+    }
 
     /**
     * Provide a reference to the type of views that you are using

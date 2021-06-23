@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.thebirthdaysapp.R
@@ -72,6 +73,21 @@ class ListOfResultsFragment : Fragment() {
         }
         viewModel.birthdayResultsResource.observe(viewLifecycleOwner, observer)
 
+    }
+
+    private fun initializeRecyclerViewer() {
+
+        val listener =
+            CustomAdapterForRecyclerView.OnItemClickListener { listIndexInDataSetOfItemTappedOn ->
+
+                /*val action =
+                    DetailsFragmentDirections.actionDetailsFragmentToCollectionOfPhotoPagesFragment(
+                        listIndexInDataSetOfItemTappedOn
+                    )*/
+
+
+                //view?.findNavController()?.navigate(action)
+            }
     }
 
 }
