@@ -42,9 +42,13 @@ class CustomAdapterForRecyclerView(private val dataSet: List<Result>) : Recycler
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
+
         viewHolder.initialsDiscTextView.text = "Temp"//dataSet[position] // TODO
-        viewHolder.nameTextView.text = dataSet[position].name.toString()
-        viewHolder.dateOfBirthTextView.text = dataSet[position].dob.toString()
+
+        val nameToShow = dataSet[position].name.first + " " + dataSet[position].name.last
+        viewHolder.nameTextView.text = nameToShow
+
+        viewHolder.dateOfBirthTextView.text = dataSet[position].dob.date
     }
 
     // Return the size of your dataset (invoked by the layout manager)

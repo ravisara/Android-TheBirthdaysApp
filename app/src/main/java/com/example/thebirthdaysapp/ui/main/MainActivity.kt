@@ -1,4 +1,3 @@
-/*
 package com.example.thebirthdaysapp.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
@@ -16,4 +15,4 @@ class MainActivity : AppCompatActivity() {
                 .commitNow()
         }
     }
-}*/
+}
