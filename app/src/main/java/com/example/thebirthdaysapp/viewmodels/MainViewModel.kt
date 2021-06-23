@@ -9,7 +9,6 @@ import com.example.thebirthdaysapp.repository.BirthdaysDataRepository
 import kotlinx.coroutines.launch
 import com.example.thebirthdaysapp.api.Result
 
-
 class MainViewModel : ViewModel() {
 
     private val repository = BirthdaysDataRepository()
