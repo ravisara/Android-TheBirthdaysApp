@@ -1,32 +1,26 @@
 package com.example.thebirthdaysapp.ui.main
 
-import android.content.DialogInterface
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.example.thebirthdaysapp.R
+import com.example.thebirthdaysapp.api.Result
 import com.example.thebirthdaysapp.helpers.Resource
 import com.example.thebirthdaysapp.viewmodels.MainViewModel
-import com.example.thebirthdaysapp.api.Result
 
 class ListOfResultsFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = ListOfResultsFragment()
-    }
-
-    val viewModel: MainViewModel by activityViewModels() // as data is shared between the fragments, this is scoped to the activity
+    private val viewModel: MainViewModel by activityViewModels() // as data is shared between the fragments, this is scoped to the activity
     private lateinit var theRecyclerView: RecyclerView
     private lateinit var customAdapterForRecyclerView: CustomAdapterForRecyclerView
 
@@ -42,7 +36,7 @@ class ListOfResultsFragment : Fragment() {
 
         theRecyclerView = view.findViewById(R.id.recyclerViewBirthdays)
 
-        viewModel.getBirthdaysAndOtherData()
+        viewModel.loadData()
 
         val observer = Observer<Resource<List<Result>>> { birthdaysResource ->
             when (birthdaysResource) {
@@ -72,6 +66,10 @@ class ListOfResultsFragment : Fragment() {
         theRecyclerView.apply {
             adapter = customAdapterForRecyclerView
             layoutManager = LinearLayoutManager(requireContext())
+
+            val itemDecoration: ItemDecoration =
+                DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+            addItemDecoration(itemDecoration)
         }
 
         val listener =  CustomAdapterForRecyclerView.OnItemClickListener { listIndexInDataSetOfItemTappedOn ->

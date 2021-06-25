@@ -7,10 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.thebirthdaysapp.R
+import com.example.thebirthdaysapp.helpers.getAgeTextToShow
+import com.example.thebirthdaysapp.helpers.getNameAndInitialsToShow
 import com.example.thebirthdaysapp.viewmodels.MainViewModel
 
 /**
@@ -20,7 +21,7 @@ import com.example.thebirthdaysapp.viewmodels.MainViewModel
  */
 class DetailsFragment : Fragment() {
 
-    val viewModel: MainViewModel by activityViewModels()
+    private val viewModel: MainViewModel by activityViewModels()
     private val args: DetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -38,13 +39,16 @@ class DetailsFragment : Fragment() {
         val indexOfItemClickedOn = args.idInDataSetOfItemClickedOn
 
         val initialsTextView = view.findViewById<TextView>(R.id.textViewLargeDiscWithInitials)
-        initialsTextView.text = viewModel.getInitialsToShowFromIndex(indexOfItemClickedOn)
+        val dataRecord = viewModel.originalBirthdayResultsFetched!![indexOfItemClickedOn]
+
+        val (initials, name) = getNameAndInitialsToShow(dataRecord.name.first, dataRecord.name.last)
+        initialsTextView.text = initials
 
         val nameTextView = view.findViewById<TextView>(R.id.textViewNameLarge)
-        nameTextView.text = viewModel.getNameToShowFromIndex(indexOfItemClickedOn)
+        nameTextView.text = name
 
         val ageTextView = view.findViewById<TextView>(R.id.textViewAge)
-        ageTextView.text = viewModel.getAgeTextToShowFromIndex(indexOfItemClickedOn)
+        ageTextView.text = getAgeTextToShow(dataRecord.dob.age)
 
         val goBackButton = view.findViewById<TextView>(R.id.buttonGoBack)
         goBackButton.setOnClickListener {
