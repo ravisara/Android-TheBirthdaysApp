@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -34,26 +36,28 @@ class ListOfResultsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        theRecyclerView = view.findViewById(R.id.recyclerViewBirthdays)
-
         viewModel.loadData()
+        initializeRecyclerViewer()
+
+        val progressBar = view.findViewById<ProgressBar>(R.id.progressBarOnRV)
+        progressBar.isVisible = true
 
         val observer = Observer<Resource<List<Result>>> { birthdaysResource ->
             when (birthdaysResource) {
                 is Resource.Success -> { // data won't be null if it gets here. Error conditions have been checked and guarded against in the repository.
-                    customAdapterForRecyclerView = CustomAdapterForRecyclerView(birthdaysResource.data!!)
-                    initializeRecyclerViewer()
-
+                    progressBar.isVisible = false
+                    customAdapterForRecyclerView.dataSet = birthdaysResource.data
+                    customAdapterForRecyclerView.notifyDataSetChanged()
+                    // customAdapterForRecyclerView.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.ALLOW
                 }
                 is Resource.Error -> {
-
+                    progressBar.isVisible = false
                     Toast.makeText(context, birthdaysResource.message, Toast.LENGTH_SHORT).show()
 
                 }
                 is Resource.Loading -> {
-
+                    progressBar.isVisible = false
                     Toast.makeText(context, "Loading...please wait", Toast.LENGTH_SHORT).show()
-
                 }
             }
         }
@@ -62,6 +66,10 @@ class ListOfResultsFragment : Fragment() {
     }
 
     private fun initializeRecyclerViewer() {
+
+        customAdapterForRecyclerView = CustomAdapterForRecyclerView(null)
+
+        theRecyclerView = requireView().findViewById(R.id.recyclerViewBirthdays)
 
         theRecyclerView.apply {
             adapter = customAdapterForRecyclerView
@@ -78,6 +86,8 @@ class ListOfResultsFragment : Fragment() {
             }
 
         customAdapterForRecyclerView.setOnItemClickListener(listener)
+
+        // customAdapterForRecyclerView.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT  // TODO this has failed to restore the position of the recylerview. When Up button is pressed position is restored but not when the "GO BACK" button is pressed.
 
     }
 
