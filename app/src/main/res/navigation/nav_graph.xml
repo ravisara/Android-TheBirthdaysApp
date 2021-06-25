@@ -22,5 +22,8 @@
         <argument
             android:name="idInDataSetOfItemClickedOn"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_detailsFragment_to_listOfResultsFragment"
+            app:destination="@id/listOfResultsFragment" />
     </fragment>
 </navigation>

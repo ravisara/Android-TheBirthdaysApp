@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
@@ -25,7 +26,7 @@ class ListOfResultsFragment : Fragment() {
         fun newInstance() = ListOfResultsFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
+    val viewModel: MainViewModel by activityViewModels() // as data is shared between the fragments, this is scoped to the activity
     private lateinit var theRecyclerView: RecyclerView
     private lateinit var customAdapterForRecyclerView: CustomAdapterForRecyclerView
 
@@ -36,21 +37,12 @@ class ListOfResultsFragment : Fragment() {
         return inflater.inflate(R.layout.list_of_results_fragment, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         theRecyclerView = view.findViewById(R.id.recyclerViewBirthdays)
-        val viewModel: MainViewModel by viewModels()
 
         viewModel.getBirthdaysAndOtherData()
-
-        //initializeRecyclerViewer()
 
         val observer = Observer<Resource<List<Result>>> { birthdaysResource ->
             when (birthdaysResource) {

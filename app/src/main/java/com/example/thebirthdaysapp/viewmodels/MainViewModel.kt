@@ -13,7 +13,7 @@ class MainViewModel : ViewModel() {
 
     private val repository = BirthdaysDataRepository()
 
-    private var originalBirthdayResultsFetched: List<Result>? = null
+    var originalBirthdayResultsFetched: List<Result>? = null
 
     private val _birthdayResultsResource = MutableLiveData<Resource<List<Result>>>()
     val birthdayResultsResource: LiveData<Resource<List<Result>>> = _birthdayResultsResource
@@ -30,6 +30,18 @@ class MainViewModel : ViewModel() {
 
         }
 
+    }
+
+    fun getInitialsToShowFromIndex(index: Int): String {
+        return originalBirthdayResultsFetched?.get(index)?.run { name.first.first().uppercase() + name.last.first().uppercase()} ?: ""
+    }
+
+    fun getNameToShowFromIndex(index: Int): String {
+        return originalBirthdayResultsFetched?.get(index)?.run { name.first + " " + name.last }?.trim() ?: ""
+    }
+
+    fun getAgeTextToShowFromIndex(index: Int): String {
+        return originalBirthdayResultsFetched?.get(index)?.run { dob.age.toString() + " YEARS OLD" } ?: ""
     }
 
 }
