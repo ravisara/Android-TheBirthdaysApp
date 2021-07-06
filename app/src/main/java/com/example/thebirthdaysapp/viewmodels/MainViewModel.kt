@@ -13,14 +13,21 @@ class MainViewModel : ViewModel() {
 
     private val repository = BirthdaysDataRepository()
 
-    private var originalBirthdayResultsFetched: List<Result>? = null
+    var originalBirthdayResultsFetched: List<Result>? = null
 
     private val _birthdayResultsResource = MutableLiveData<Resource<List<Result>>>()
     val birthdayResultsResource: LiveData<Resource<List<Result>>> = _birthdayResultsResource
 
-    fun getBirthdaysAndOtherData() {
+    fun loadData() {
+        if (originalBirthdayResultsFetched == null) { // only fetches if the data have not been fetched. TODO ideally some time out value should be defined so that if the data is stale it could be fetched from the web.
+            getBirthdaysAndOtherData()
+        }
+    }
+
+    private fun getBirthdaysAndOtherData() {
 
         viewModelScope.launch {
+
             val originalFetchResult = repository.getBirthdaysAndOtherDataFromAPI()
             if (originalFetchResult is Resource.Success) { // if the fetch was a success, the original list is saved in the viewmodel
                 originalBirthdayResultsFetched = originalFetchResult.data
@@ -31,5 +38,7 @@ class MainViewModel : ViewModel() {
         }
 
     }
+
+
 
 }

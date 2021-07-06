@@ -5,14 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import android.widget.TextView
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.thebirthdaysapp.R
+import com.example.thebirthdaysapp.helpers.getAgeTextToShow
+import com.example.thebirthdaysapp.helpers.getNameAndInitialsToShow
 import com.example.thebirthdaysapp.viewmodels.MainViewModel
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -21,8 +21,8 @@ private const val ARG_PARAM2 = "param2"
  */
 class DetailsFragment : Fragment() {
 
-
-    val viewModel: MainViewModel by viewModels()
+    private val viewModel: MainViewModel by activityViewModels()
+    private val args: DetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,8 +32,29 @@ class DetailsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_details, container, false)
     }
 
-    // TODO POPULATE THE VIEW WITH DATA(RAN OUT OF TIME FOR THIS)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        super.onViewCreated(view, savedInstanceState)
 
+        val indexOfItemClickedOn = args.idInDataSetOfItemClickedOn
+
+        val initialsTextView = view.findViewById<TextView>(R.id.textViewLargeDiscWithInitials)
+        val dataRecord = viewModel.originalBirthdayResultsFetched!![indexOfItemClickedOn]
+
+        val (initials, name) = getNameAndInitialsToShow(dataRecord.name.first, dataRecord.name.last)
+        initialsTextView.text = initials
+
+        val nameTextView = view.findViewById<TextView>(R.id.textViewNameLarge)
+        nameTextView.text = name
+
+        val ageTextView = view.findViewById<TextView>(R.id.textViewAge)
+        ageTextView.text = getAgeTextToShow(dataRecord.dob.age)
+
+        val goBackButton = view.findViewById<TextView>(R.id.buttonGoBack)
+        goBackButton.setOnClickListener {
+            val action = DetailsFragmentDirections.actionDetailsFragmentToListOfResultsFragment()
+            view.findNavController().navigate(action)
+        }
+    }
 
 }

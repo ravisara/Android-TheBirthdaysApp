@@ -8,8 +8,8 @@
     <fragment
         android:id="@+id/listOfResultsFragment"
         android:name="com.example.thebirthdaysapp.ui.main.ListOfResultsFragment"
-        android:label="list_of_results_fragment"
-        tools:layout="@layout/list_of_results_fragment" >
+        android:label="Birthdays of People"
+        tools:layout="@layout/list_of_results_fragment">
         <action
             android:id="@+id/action_listOfResultsFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />
@@ -17,10 +17,13 @@
     <fragment
         android:id="@+id/detailsFragment"
         android:name="com.example.thebirthdaysapp.ui.main.DetailsFragment"
-        android:label="fragment_details"
-        tools:layout="@layout/fragment_details" >
+        android:label="Details of person"
+        tools:layout="@layout/fragment_details">
         <argument
             android:name="idInDataSetOfItemClickedOn"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_detailsFragment_to_listOfResultsFragment"
+            app:destination="@id/listOfResultsFragment" />
     </fragment>
 </navigation>
