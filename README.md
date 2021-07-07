@@ -1,13 +1,14 @@
-# TheBirthdaysApp
+# Project name: 
 TheBirthdaysApp
 
-Clone the repo and try to run the App.
+# Description: 
+The app uses Retrofit to fetch a JSON from an API. List of names and birthdays are shown in a RecyclerView in the startup screen. When an entry is tapped on, it loads a details screen with more details about the selected item. The app uses Livedata and attempts to MVVM architecture pattern to a good extent. It also use the Navigation Library.
 
-Please note:
-A plugin was used to generate data classes from JSON
-Some boilerplate code was added for a resource class and some basic retrofit error handling from another project. Some other code also copied from my own projects to save time.
+# Installation:
+Clone the repository and run the app on an emulator. 
 
-
+# Usage:
+Has been tested on a Pixel 3 XL(API 29). Make sure the emulator can access the internet. When the App is loaded, it should display a list of items after fetching some data from the internet. Click on an item to show details about the user in a different screen.
 
 <h2>Screenshots</h2>
 <div>
@@ -29,6 +30,11 @@ Some boilerplate code was added for a resource class and some basic retrofit err
  <li>Remove the backing field for live data and use a livedata builder instead</li>
 </ul>
 
+# Contributing:
+No contributions are expected or necessary. 
 
+# Credits: 
+Built as part of a coding challenge. I've been told that no need to give any credits. So, not including anything here.
 
-
+# License: 
+Educational use only.
